@@ -1,10 +1,16 @@
 package com.fenix.fenix_mail_service.component;
 
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "fenix.spring.mail")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MailProperties {
 
     private String host = "localhost";
@@ -15,68 +21,4 @@ public class MailProperties {
     private boolean auth = false;
     private boolean starttlsEnable = false;
     private String fromAddress = "";
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getDefaultEncoding() {
-        return defaultEncoding;
-    }
-
-    public void setDefaultEncoding(String defaultEncoding) {
-        this.defaultEncoding = defaultEncoding;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isAuth() {
-        return auth;
-    }
-
-    public void setAuth(boolean auth) {
-        this.auth = auth;
-    }
-
-    public boolean isStarttlsEnable() {
-        return starttlsEnable;
-    }
-
-    public void setStarttlsEnable(boolean starttlsEnable) {
-        this.starttlsEnable = starttlsEnable;
-    }
-
-    public String getFromAddress() {
-        return fromAddress;
-    }
-
-    public void setFromAddress(String sendFrom) {
-        this.fromAddress = fromAddress;
-    }
 }

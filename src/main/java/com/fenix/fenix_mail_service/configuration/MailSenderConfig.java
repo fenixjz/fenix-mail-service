@@ -1,6 +1,7 @@
 package com.fenix.fenix_mail_service.configuration;
 
 import com.fenix.fenix_mail_service.component.MailProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +12,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableConfigurationProperties(MailProperties.class)
+@RequiredArgsConstructor
 public class MailSenderConfig {
 
     private final MailProperties mailProperties;
-
-    public MailSenderConfig(MailProperties mailProperties) {
-        this.mailProperties = mailProperties;
-    }
 
     @Bean
     public JavaMailSender javaMailSender() {
