@@ -25,7 +25,10 @@ public class MailSenderConfig {
         System.out.println("Mail Port: " + mailProperties.getPort());
         System.out.println("Mail Username: " + mailProperties.getUsername());
         System.out.println("Mail Password: " + mailProperties.getPassword());
-        System.out.println("Mail Sent From: " + mailProperties.getSentFrom());
+        System.out.println("Mail Sent From: " + mailProperties.getSendFrom());
+        System.out.println("mail.default-encoding: " + mailProperties.getDefaultEncoding());
+        System.out.println("mail.smtp.auth: " + mailProperties.isAuth());
+        System.out.println("mail.smtp.starttls.enable: " + mailProperties.isStarttlsEnable());
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
@@ -40,7 +43,7 @@ public class MailSenderConfig {
         props.put("mail.port", mailProperties.getPort());
         props.put("mail.username", mailProperties.getUsername());
         props.put("mail.password", mailProperties.getPassword());
-        props.put("mail.send.from", mailProperties.getSentFrom());
+        props.put("mail.send.from", mailProperties.getSendFrom());
         props.put("mail.default-encoding", mailProperties.getDefaultEncoding());
         props.put("mail.smtp.auth", mailProperties.isAuth());
         props.put("mail.smtp.starttls.enable", mailProperties.isStarttlsEnable());
