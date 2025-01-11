@@ -11,9 +11,9 @@ public class MailProperties {
     private int port;
     private String username;
     private String password;
-    private String defaultEncoding;
-    private boolean auth;
-    private boolean starttlsEnable;
+    private String defaultEncoding = "UTF-8";
+    private boolean auth = true;
+    private boolean starttlsEnable = true;
     private String sentFrom;
 
     public String getHost() {
