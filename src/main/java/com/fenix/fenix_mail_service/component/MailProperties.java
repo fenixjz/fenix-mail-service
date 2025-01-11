@@ -21,4 +21,5 @@ public class MailProperties {
     private boolean auth = false;
     private boolean starttlsEnable = false;
     private String fromAddress = "";
+    private String logPath = "";
 }

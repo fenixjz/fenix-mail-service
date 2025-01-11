@@ -1,6 +1,7 @@
 package com.fenix.fenix_mail_service.service;
 
 import com.fenix.fenix_mail_service.component.MailProperties;
+import com.fenix.fenix_mail_service.model.EmailLog;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +19,7 @@ public class MailService {
 
     private final JavaMailSender mailSender;
     private final MailProperties mailProperties;
+    private final JsonFileService jsonFileService;
 
     /**
      * Sends an email to one or more recipients with plain text or HTML content.
@@ -29,6 +32,11 @@ public class MailService {
      * @throws RuntimeException if there is an error while sending the email
      */
     public boolean sendEmail(List<String> to, String subject, String content, boolean isHtml) {
+        EmailLog emailLog = new EmailLog();
+        emailLog.setRecipients(to);
+        emailLog.setSubject(subject);
+        emailLog.setBody(content);
+        emailLog.setSentAt(LocalDateTime.now());
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
@@ -38,8 +46,12 @@ public class MailService {
             helper.setText(content, isHtml);
 
             mailSender.send(message);
+            emailLog.setSuccess(true);
+            jsonFileService.saveEmailLog(emailLog);
             return true;
         } catch (MessagingException e) {
+            emailLog.setSuccess(false);
+            jsonFileService.saveEmailLog(emailLog);
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
         }
     }
@@ -57,6 +69,11 @@ public class MailService {
      */
     public boolean sendEmailWithAttachment(
             List<String> to, String subject, String content, boolean isHtml, File attachment) {
+        EmailLog emailLog = new EmailLog();
+        emailLog.setRecipients(to);
+        emailLog.setSubject(subject);
+        emailLog.setBody(content);
+        emailLog.setSentAt(LocalDateTime.now());
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -70,8 +87,12 @@ public class MailService {
             }
 
             mailSender.send(message);
+            emailLog.setSuccess(true);
+            jsonFileService.saveEmailLog(emailLog);
             return true;
         } catch (MessagingException e) {
+            emailLog.setSuccess(false);
+            jsonFileService.saveEmailLog(emailLog);
             throw new RuntimeException("Failed to send email with attachment: " + e.getMessage(), e);
         }
     }

@@ -45,6 +45,7 @@ public class MailSenderConfig {
         props.put("mail.default-encoding", mailProperties.getDefaultEncoding());
         props.put("mail.smtp.auth", mailProperties.isAuth());
         props.put("mail.smtp.starttls.enable", mailProperties.isStarttlsEnable());
+        props.put("mail.log-path", mailProperties.getLogPath());
 
         return mailSender;
     }
