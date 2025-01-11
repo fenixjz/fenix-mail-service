@@ -1,6 +1,6 @@
 # Fenix Mail Service
 
-The Fenix Mail Service is a lightweight service for sending emails with support for logging email history into a JSON file. It provides methods to send plain text and HTML emails, with or without attachments. This document explains how to integrate this service into another Spring Boot application using JitPack and configure it properly.
+Fenix Mail Service is a lightweight, flexible service for sending emails with support for logging email history into a JSON file. It supports sending plain text and HTML emails, with or without attachments. This README will guide you through integrating the service into a Spring Boot application and configuring it effectively.
 
 ---
 
@@ -10,12 +10,13 @@ The Fenix Mail Service is a lightweight service for sending emails with support 
 2. [Configuration](#configuration)
 3. [Available Methods](#available-methods)
 4. [Usage](#usage)
+5. [License](#license)
 
 ---
 
 ## Installation
 
-To integrate the Fenix Mail Service into your Spring Boot project, add the dependency from JitPack to your `pom.xml`.
+To integrate Fenix Mail Service into your Spring Boot project, add the dependency from JitPack to your `pom.xml` file.
 
 ### Step 1: Add JitPack Repository
 Add the JitPack repository to your `repositories` section in `pom.xml`:
@@ -40,29 +41,29 @@ Add the Fenix Mail Service dependency:
 </dependency>
 ```
 
-Replace `your-username` with the GitHub username where the service is hosted, and update the version as needed.
+Replace `fenixjz` with the appropriate GitHub username hosting the service, and update the version as needed.
 
 ---
 
 ## Configuration
 
-The Fenix Mail Service requires specific properties to be added to the `application.properties` or `application.yml` file in your Spring Boot project.
+Fenix Mail Service requires specific properties to be set in your `application.properties` or `application.yml` file.
 
 ### Example Configuration (application.properties):
 
 ```properties
-fenix.spring.mail.host=your-smtp-host
-fenix.spring.mail.port=your-port
+fenix.spring.mail.host=smtp.example.com
+fenix.spring.mail.port=587
 fenix.spring.mail.username=your-username
 fenix.spring.mail.password=your-password
-fenix.spring.mail.from-address=your_email@email.com
+fenix.spring.mail.from-address=no-reply@example.com
 fenix.spring.mail.auth=true
 fenix.spring.mail.starttls.enable=true
 fenix.spring.mail.default-encoding=UTF-8
-fenix.spring.mail.log-path=C:/uploads/mail_log.json
+fenix.spring.mail.log-path=/var/logs/mail_log.json
 ```
 
-### Explanation of Properties:
+### Property Descriptions:
 
 | Property                          | Description                                           |
 |-----------------------------------|-------------------------------------------------------|
@@ -80,7 +81,7 @@ fenix.spring.mail.log-path=C:/uploads/mail_log.json
 
 ## Available Methods
 
-### `sendEmail`
+### `send`
 
 Sends an email to one or more recipients with plain text or HTML content.
 
@@ -88,31 +89,8 @@ Sends an email to one or more recipients with plain text or HTML content.
 - `to` (List<String>): A list of recipient email addresses.
 - `subject` (String): The subject of the email.
 - `content` (String): The body content of the email, which can be plain text or HTML.
-- `isHtml` (boolean): A flag indicating whether the content is HTML (true) or plain text (false).
-
-#### Returns:
-- `boolean`: `true` if the email is successfully sent.
-
-#### Example:
-```java
-mailService.sendEmail(
-    List.of("recipient@example.com"),
-    "Test Subject",
-    "<p>This is a test email.</p>",
-    true
-);
-```
-
-### `sendEmailWithAttachment`
-
-Sends an email to one or more recipients with plain text or HTML content and an attachment.
-
-#### Parameters:
-- `to` (List<String>): A list of recipient email addresses.
-- `subject` (String): The subject of the email.
-- `content` (String): The body content of the email, which can be plain text or HTML.
-- `isHtml` (boolean): A flag indicating whether the content is HTML (true) or plain text (false).
-- `attachment` (File): A file to be attached to the email; can be `null` if no attachment is needed.
+- `isHtml` (boolean): A flag indicating whether the content is HTML (`true`) or plain text (`false`).
+- `attachment` (File): Optional. A file to be attached to the email. Can be `null`.
 
 #### Returns:
 - `boolean`: `true` if the email is successfully sent.
@@ -120,10 +98,10 @@ Sends an email to one or more recipients with plain text or HTML content and an 
 #### Example:
 ```java
 File attachment = new File("/path/to/file.pdf");
-mailService.sendEmailWithAttachment(
+boolean isSent = mailService.send(
     List.of("recipient@example.com"),
     "Test Subject",
-    "<p>This is a test email with attachment.</p>",
+    "<p>This is a test email with optional attachment.</p>",
     true,
     attachment
 );
@@ -138,17 +116,17 @@ Reads the email log entries from the JSON file.
 
 #### Example:
 ```java
-List<EmailLog> emailLogs = logService.readEmailLogs();
-emailLogs.forEach(System.out::println);
+List<EmailLog> logs = logService.readEmailLogs();
+logs.forEach(System.out::println);
 ```
 
 ---
 
 ## Usage
 
-1. Autowire the `MailService` and/or `LogService` into your Spring components where needed.
-2. Configure the properties in your `application.properties` or `application.yml` file.
-3. Use the available methods to send emails and manage logs.
+1. **Inject `FenixMailService` and/or `FenixLogService`** into your Spring components where needed.
+2. **Set properties** in your `application.properties` or `application.yml` file.
+3. **Use available methods** to send emails and manage logs.
 
 #### Example Integration:
 ```java
@@ -164,11 +142,12 @@ public class MailController {
 
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request) {
-        boolean isSent = mailService.sendEmail(
-            request.getRecipients(),
-            request.getSubject(),
-            request.getContent(),
-            request.isHtml()
+        boolean isSent = mailService.send(
+                request.getRecipients(),
+                request.getSubject(),
+                request.getContent(),
+                request.isHtml(),
+                null
         );
         return isSent ? ResponseEntity.ok("Email sent successfully") : ResponseEntity.status(500).body("Failed to send email");
     }

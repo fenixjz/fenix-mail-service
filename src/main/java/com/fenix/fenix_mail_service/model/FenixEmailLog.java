@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-public class EmailLog {
+public class FenixEmailLog {
 
     private List<String> recipients;
     private String subject;

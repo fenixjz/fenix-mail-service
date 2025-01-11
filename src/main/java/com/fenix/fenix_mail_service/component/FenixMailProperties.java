@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MailProperties {
+public class FenixMailProperties {
 
     private String host = "localhost";
     private int port = 25;
