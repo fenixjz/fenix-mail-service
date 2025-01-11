@@ -1,183 +1,182 @@
-# **MailService Help Documentation**
+# Fenix Mail Service
 
-This document provides detailed instructions on how to use the `MailService` and configure it in your Spring Boot project.
-
----
-
-## **Overview**
-The `MailService` is a simple and intuitive utility for sending emails. It supports:
-- Sending plain text and HTML emails.
-- Sending emails to multiple recipients.
-- Adding attachments to emails.
-- Easy configuration via `application.properties` or `application.yml` using the prefix `fenix.spring.mail`.
+The Fenix Mail Service is a lightweight service for sending emails with support for logging email history into a JSON file. It provides methods to send plain text and HTML emails, with or without attachments. This document explains how to integrate this service into another Spring Boot application using JitPack and configure it properly.
 
 ---
 
-## **Methods**
+## Table of Contents
 
-### **1. `sendEmail`**
-Sends an email to one or more recipients with either plain text or HTML content.
+1. [Installation](#installation)
+2. [Configuration](#configuration)
+3. [Available Methods](#available-methods)
+4. [Usage](#usage)
 
-#### **Parameters**
-- `List<String> to`: A list of recipient email addresses.
-- `String subject`: The subject of the email.
-- `String content`: The body of the email, which can be plain text or HTML.
-- `boolean isHtml`: Indicates whether the email content is in HTML format (`true`) or plain text (`false`).
+---
 
-#### **Return Value**
-- Returns `true` if the email is sent successfully.
-- Throws a `RuntimeException` with a detailed error message if the operation fails.
+## Installation
 
-#### **Example Usage**
-```java
-boolean isSent = mailService.sendEmail(
-    List.of("recipient1@example.com", "recipient2@example.com"),
-    "Welcome",
-    "<h1>Welcome to our service!</h1>",
-    true
-);
-System.out.println("Email sent: " + isSent);
+To integrate the Fenix Mail Service into your Spring Boot project, add the dependency from JitPack to your `pom.xml`.
+
+### Step 1: Add JitPack Repository
+Add the JitPack repository to your `repositories` section in `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 ```
 
+### Step 2: Add Fenix Mail Service Dependency
+Add the Fenix Mail Service dependency:
+
+```xml
+<dependency>
+    <groupId>com.github.fenixjz</groupId>
+    <artifactId>fenix-mail-service</artifactId>
+    <version>v1.1.6</version>
+</dependency>
+```
+
+Replace `your-username` with the GitHub username where the service is hosted, and update the version as needed.
+
 ---
 
-### **2. `sendEmailWithAttachment`**
-Sends an email to one or more recipients with either plain text or HTML content and an optional file attachment.
+## Configuration
 
-#### **Parameters**
-- `List<String> to`: A list of recipient email addresses.
-- `String subject`: The subject of the email.
-- `String content`: The body of the email, which can be plain text or HTML.
-- `boolean isHtml`: Indicates whether the email content is in HTML format (`true`) or plain text (`false`).
-- `File attachment`: A file to be attached to the email (can be `null` if no attachment is needed).
+The Fenix Mail Service requires specific properties to be added to the `application.properties` or `application.yml` file in your Spring Boot project.
 
-#### **Return Value**
-- Returns `true` if the email is sent successfully.
-- Throws a `RuntimeException` with a detailed error message if the operation fails.
+### Example Configuration (application.properties):
 
-#### **Example Usage**
+```properties
+fenix.spring.mail.host=your-smtp-host
+fenix.spring.mail.port=your-port
+fenix.spring.mail.username=your-username
+fenix.spring.mail.password=your-password
+fenix.spring.mail.from-address=your_email@email.com
+fenix.spring.mail.auth=true
+fenix.spring.mail.starttls.enable=true
+fenix.spring.mail.default-encoding=UTF-8
+fenix.spring.mail.log-path=C:/uploads/mail_log.json
+```
+
+### Explanation of Properties:
+
+| Property                          | Description                                           |
+|-----------------------------------|-------------------------------------------------------|
+| `fenix.spring.mail.host`          | SMTP server host (e.g., MailJet, Gmail, etc.)         |
+| `fenix.spring.mail.port`          | SMTP server port                                      |
+| `fenix.spring.mail.username`      | SMTP username                                         |
+| `fenix.spring.mail.password`      | SMTP password                                         |
+| `fenix.spring.mail.from-address`  | Default email address used as the sender             |
+| `fenix.spring.mail.auth`          | Enable SMTP authentication                           |
+| `fenix.spring.mail.starttls.enable` | Enable STARTTLS                                      |
+| `fenix.spring.mail.default-encoding` | Default email encoding                               |
+| `fenix.spring.mail.log-path`      | Path to the JSON file for logging email history      |
+
+---
+
+## Available Methods
+
+### `sendEmail`
+
+Sends an email to one or more recipients with plain text or HTML content.
+
+#### Parameters:
+- `to` (List<String>): A list of recipient email addresses.
+- `subject` (String): The subject of the email.
+- `content` (String): The body content of the email, which can be plain text or HTML.
+- `isHtml` (boolean): A flag indicating whether the content is HTML (true) or plain text (false).
+
+#### Returns:
+- `boolean`: `true` if the email is successfully sent.
+
+#### Example:
 ```java
-File attachment = new File("path/to/file.pdf");
-boolean isSent = mailService.sendEmailWithAttachment(
-    List.of("recipient1@example.com", "recipient2@example.com"),
-    "Report",
-    "<p>Here is the requested report.</p>",
+mailService.sendEmail(
+    List.of("recipient@example.com"),
+    "Test Subject",
+    "<p>This is a test email.</p>",
+    true
+);
+```
+
+### `sendEmailWithAttachment`
+
+Sends an email to one or more recipients with plain text or HTML content and an attachment.
+
+#### Parameters:
+- `to` (List<String>): A list of recipient email addresses.
+- `subject` (String): The subject of the email.
+- `content` (String): The body content of the email, which can be plain text or HTML.
+- `isHtml` (boolean): A flag indicating whether the content is HTML (true) or plain text (false).
+- `attachment` (File): A file to be attached to the email; can be `null` if no attachment is needed.
+
+#### Returns:
+- `boolean`: `true` if the email is successfully sent.
+
+#### Example:
+```java
+File attachment = new File("/path/to/file.pdf");
+mailService.sendEmailWithAttachment(
+    List.of("recipient@example.com"),
+    "Test Subject",
+    "<p>This is a test email with attachment.</p>",
     true,
     attachment
 );
-System.out.println("Email sent with attachment: " + isSent);
 ```
 
----
+### `readEmailLogs`
 
-## **Configuration**
+Reads the email log entries from the JSON file.
 
-The `MailService` uses custom configuration properties prefixed with `fenix.spring.mail`. These can be added to your `application.properties` or `application.yml` file.
+#### Returns:
+- `List<EmailLog>`: A list of `EmailLog` objects representing the history of sent emails.
 
-### **Properties Configuration**
-Add the following properties to your `application.properties`:
-
-```properties
-fenix.spring.mail.host=smtp.gmail.com
-fenix.spring.mail.port=587
-fenix.spring.mail.username=your_email@gmail.com
-fenix.spring.mail.password=your_password
-fenix.spring.mail.auth=true
-fenix.spring.mail.starttls.enable=true
-```
-
-### **YAML Configuration**
-Alternatively, you can configure the mail server in `application.yml`:
-
-```yaml
-fenix:
-  spring:
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: your_email@gmail.com
-      password: your_password
-      auth: true
-      starttls:
-        enable: true
-```
-
----
-
-## **Initialization**
-
-The `MailService` is a Spring-managed component. To use it in your application, simply inject it into your class as a dependency.
-
-#### **Example of Dependency Injection**
+#### Example:
 ```java
-import com.fenix.fenix_mail_service.service.MailService;
-import org.springframework.stereotype.Service;
+List<EmailLog> emailLogs = logService.readEmailLogs();
+emailLogs.forEach(System.out::println);
+```
 
-@Service
-public class NotificationService {
+---
+
+## Usage
+
+1. Autowire the `MailService` and/or `LogService` into your Spring components where needed.
+2. Configure the properties in your `application.properties` or `application.yml` file.
+3. Use the available methods to send emails and manage logs.
+
+#### Example Integration:
+```java
+@RestController
+@RequestMapping("/api/mail")
+public class MailController {
 
     private final MailService mailService;
 
-    public NotificationService(MailService mailService) {
+    public MailController(MailService mailService) {
         this.mailService = mailService;
     }
 
-    public void sendWelcomeEmail() {
-        mailService.sendEmail(
-            List.of("user@example.com"),
-            "Welcome!",
-            "<h1>Thank you for joining us!</h1>",
-            true
+    @PostMapping("/send")
+    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request) {
+        boolean isSent = mailService.sendEmail(
+            request.getRecipients(),
+            request.getSubject(),
+            request.getContent(),
+            request.isHtml()
         );
+        return isSent ? ResponseEntity.ok("Email sent successfully") : ResponseEntity.status(500).body("Failed to send email");
     }
 }
 ```
 
 ---
 
-## **Error Handling**
+## License
 
-### **RuntimeException**
-If an error occurs during email sending (e.g., invalid recipient address, SMTP server issue), the methods throw a `RuntimeException`. This exception includes a detailed error message for debugging.
-
-### **Example of Error Handling**
-The exceptions are already handled internally, so the user does not need to handle them explicitly. If needed, the user can log or process the errors.
-
-#### **Example**
-```java
-try {
-    mailService.sendEmail(
-        List.of("recipient@example.com"),
-        "Test Email",
-        "This is a test.",
-        false
-    );
-    System.out.println("Email sent successfully!");
-} catch (RuntimeException e) {
-    System.err.println("Failed to send email: " + e.getMessage());
-}
-```
-
----
-
-## **Prerequisites**
-
-Before using the `MailService`, ensure the following:
-1. You have a valid email server (e.g., Gmail, Outlook) and its SMTP settings.
-2. Your email server allows SMTP access.
-3. For Gmail, ensure "Less secure app access" or App Password is configured if needed.
-
----
-
-## **FAQ**
-
-### **Q: Can I use MailService with different SMTP servers?**
-Yes, you can configure any SMTP server by adjusting the `fenix.spring.mail` properties in `application.properties` or `application.yml`.
-
-### **Q: What happens if I don't provide valid credentials?**
-If the credentials are invalid, a `RuntimeException` will be thrown with an appropriate error message from the SMTP server.
-
----
-
-If you have further questions or issues, feel free to contact the development team.
-
+This project is licensed under the MIT License.

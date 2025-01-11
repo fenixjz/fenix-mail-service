@@ -16,15 +16,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class JsonFileService {
+public class LogService {
 
     private final MailProperties mailProperties;
     private final ObjectMapper objectMapper;
 
     /**
-     * Save history of email in json file.
+     * Saves the email log entry to a JSON file.
+     * This method reads the current list of email logs from the JSON file,
+     * appends the new email log entry, and writes the updated list back to the file.
      *
-     * @param emailLog EmailLog
+     * @param emailLog An instance of {@link EmailLog} representing the details of the email
+     *                 to be logged, such as recipient, subject, body, timestamp, and status.
+     * @throws RuntimeException if an error occurs while writing to the JSON file.
      */
     public void saveEmailLog(EmailLog emailLog) {
         List<EmailLog> emailLogs = readEmailLogs();
@@ -39,9 +43,14 @@ public class JsonFileService {
     }
 
     /**
-     * Read email history from json file.
+     * Reads the email log entries from the JSON file.
+     * This method checks if the JSON file exists. If it does, it reads the file and
+     * deserializes its content into a list of {@link EmailLog} objects. If the file does not exist,
+     * it returns an empty list.
      *
-     * @return List<EmailLog>
+     * @return A {@link List} of {@link EmailLog} objects representing the history of sent emails.
+     *         Returns an empty list if the log file does not exist.
+     * @throws RuntimeException if an error occurs while reading from the JSON file.
      */
     public List<EmailLog> readEmailLogs() {
         if (!Files.exists(Paths.get(mailProperties.getLogPath()))) {

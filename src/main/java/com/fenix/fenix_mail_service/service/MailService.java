@@ -19,7 +19,7 @@ public class MailService {
 
     private final JavaMailSender mailSender;
     private final MailProperties mailProperties;
-    private final JsonFileService jsonFileService;
+    private final LogService logService;
 
     /**
      * Sends an email to one or more recipients with plain text or HTML content.
@@ -47,11 +47,11 @@ public class MailService {
 
             mailSender.send(message);
             emailLog.setSuccess(true);
-            jsonFileService.saveEmailLog(emailLog);
+            logService.saveEmailLog(emailLog);
             return true;
         } catch (MessagingException e) {
             emailLog.setSuccess(false);
-            jsonFileService.saveEmailLog(emailLog);
+            logService.saveEmailLog(emailLog);
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
         }
     }
@@ -88,11 +88,11 @@ public class MailService {
 
             mailSender.send(message);
             emailLog.setSuccess(true);
-            jsonFileService.saveEmailLog(emailLog);
+            logService.saveEmailLog(emailLog);
             return true;
         } catch (MessagingException e) {
             emailLog.setSuccess(false);
-            jsonFileService.saveEmailLog(emailLog);
+            logService.saveEmailLog(emailLog);
             throw new RuntimeException("Failed to send email with attachment: " + e.getMessage(), e);
         }
     }
