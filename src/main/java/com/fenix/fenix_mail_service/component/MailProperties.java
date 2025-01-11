@@ -11,8 +11,10 @@ public class MailProperties {
     private int port;
     private String username;
     private String password;
+    private String defaultEncoding;
     private boolean auth;
     private boolean starttlsEnable;
+    private String sentFrom;
 
     public String getHost() {
         return host;
@@ -38,6 +40,14 @@ public class MailProperties {
         this.username = username;
     }
 
+    public String getDefaultEncoding() {
+        return defaultEncoding;
+    }
+
+    public void setDefaultEncoding(String defaultEncoding) {
+        this.defaultEncoding = defaultEncoding;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -60,5 +70,13 @@ public class MailProperties {
 
     public void setStarttlsEnable(boolean starttlsEnable) {
         this.starttlsEnable = starttlsEnable;
+    }
+
+    public String getSentFrom() {
+        return sentFrom;
+    }
+
+    public void setSentFrom(String sentFrom) {
+        this.sentFrom = sentFrom;
     }
 }

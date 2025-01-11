@@ -24,10 +24,12 @@ public class MailSenderConfig {
         mailSender.setPort(mailProperties.getPort());
         mailSender.setUsername(mailProperties.getUsername());
         mailSender.setPassword(mailProperties.getPassword());
+        mailSender.setDefaultEncoding(mailProperties.getDefaultEncoding());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.auth", mailProperties.isAuth());
         props.put("mail.smtp.starttls.enable", mailProperties.isStarttlsEnable());
+        props.put("mail.send.from", mailProperties.isStarttlsEnable());
 
         return mailSender;
     }
