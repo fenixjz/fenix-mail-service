@@ -1,5 +1,6 @@
 package com.fenix.fenix_mail_service.service;
 
+import com.fenix.fenix_mail_service.component.MailProperties;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,14 +14,16 @@ import java.util.List;
 public class MailService {
 
     private final JavaMailSender mailSender;
+    private final MailProperties mailProperties;
 
     /**
      * Constructor for MailService that initializes the JavaMailSender instance.
      *
      * @param mailSender the JavaMailSender bean provided by Spring for sending emails
      */
-    public MailService(JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender, MailProperties mailProperties) {
         this.mailSender = mailSender;
+        this.mailProperties = mailProperties;
     }
 
     /**
@@ -37,6 +40,7 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            helper.setFrom(mailProperties.getSentFrom());
             helper.setTo(to.toArray(new String[0]));
             helper.setSubject(subject);
             helper.setText(content, isHtml);
@@ -64,6 +68,7 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(mailProperties.getSentFrom());
             helper.setTo(to.toArray(new String[0]));
             helper.setSubject(subject);
             helper.setText(content, isHtml);
