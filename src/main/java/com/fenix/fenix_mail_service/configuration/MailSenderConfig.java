@@ -27,6 +27,7 @@ public class MailSenderConfig {
         System.out.println("mail.default-encoding: " + mailProperties.getDefaultEncoding());
         System.out.println("mail.smtp.auth: " + mailProperties.isAuth());
         System.out.println("mail.smtp.starttls.enable: " + mailProperties.isStarttlsEnable());
+        System.out.println("mail.log-path: " + mailProperties.getLogPath());
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
