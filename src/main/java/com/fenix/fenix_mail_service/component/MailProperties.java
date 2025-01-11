@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "fenix.spring.mail")
 public class MailProperties {
 
-    private String host;
-    private int port;
-    private String username;
-    private String password;
+    private String host = "localhost";
+    private int port = 25;
+    private String username = "";
+    private String password = "";
     private String defaultEncoding = "UTF-8";
-    private boolean auth = true;
-    private boolean starttlsEnable = true;
-    private String sentFrom;
+    private boolean auth = false;
+    private boolean starttlsEnable = false;
+    private String sentFrom = "";
 
     public String getHost() {
         return host;

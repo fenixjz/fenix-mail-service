@@ -21,6 +21,12 @@ public class MailSenderConfig {
 
     @Bean
     public JavaMailSender javaMailSender() {
+        System.out.println("Mail Host: " + mailProperties.getHost());
+        System.out.println("Mail Port: " + mailProperties.getPort());
+        System.out.println("Mail Username: " + mailProperties.getUsername());
+        System.out.println("Mail Password: " + mailProperties.getPassword());
+        System.out.println("Mail Sent From: " + mailProperties.getSentFrom());
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(mailProperties.getHost());
