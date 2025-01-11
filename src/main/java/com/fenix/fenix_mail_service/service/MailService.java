@@ -40,7 +40,7 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-            helper.setFrom(mailProperties.getSendFrom());
+            helper.setFrom(mailProperties.getFromAddress());
             helper.setTo(to.toArray(new String[0]));
             helper.setSubject(subject);
             helper.setText(content, isHtml);
@@ -68,7 +68,7 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(mailProperties.getSendFrom());
+            helper.setFrom(mailProperties.getFromAddress());
             helper.setTo(to.toArray(new String[0]));
             helper.setSubject(subject);
             helper.setText(content, isHtml);

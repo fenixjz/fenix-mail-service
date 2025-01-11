@@ -14,7 +14,7 @@ public class MailProperties {
     private String defaultEncoding = "UTF-8";
     private boolean auth = false;
     private boolean starttlsEnable = false;
-    private String sendFrom = "";
+    private String fromAddress = "";
 
     public String getHost() {
         return host;
@@ -72,11 +72,11 @@ public class MailProperties {
         this.starttlsEnable = starttlsEnable;
     }
 
-    public String getSendFrom() {
-        return sendFrom;
+    public String getFromAddress() {
+        return fromAddress;
     }
 
-    public void setSendFrom(String sendFrom) {
-        this.sendFrom = sendFrom;
+    public void setFromAddress(String sendFrom) {
+        this.fromAddress = fromAddress;
     }
 }
