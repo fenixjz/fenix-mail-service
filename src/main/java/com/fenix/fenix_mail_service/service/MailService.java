@@ -3,6 +3,7 @@ package com.fenix.fenix_mail_service.service;
 import com.fenix.fenix_mail_service.component.MailProperties;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -11,20 +12,11 @@ import java.io.File;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MailService {
 
     private final JavaMailSender mailSender;
     private final MailProperties mailProperties;
-
-    /**
-     * Constructor for MailService that initializes the JavaMailSender instance.
-     *
-     * @param mailSender the JavaMailSender bean provided by Spring for sending emails
-     */
-    public MailService(JavaMailSender mailSender, MailProperties mailProperties) {
-        this.mailSender = mailSender;
-        this.mailProperties = mailProperties;
-    }
 
     /**
      * Sends an email to one or more recipients with plain text or HTML content.
