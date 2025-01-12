@@ -1,7 +1,7 @@
 package com.fenix.fenix_mail_service.service;
 
 import com.fenix.fenix_mail_service.component.FenixMailProperties;
-import com.fenix.fenix_mail_service.model.EmailRequest;
+import com.fenix.fenix_mail_service.model.FenixEmailRequest;
 import com.fenix.fenix_mail_service.model.FenixEmailLog;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -91,16 +91,16 @@ public class FenixMailService {
     }
 
     /**
-     * Sends an email using the details provided in the {@link EmailRequest} object.
+     * Sends an email using the details provided in the {@link FenixEmailRequest} object.
      * <p>
-     * This method validates the {@link EmailRequest} object, constructs an email message,
+     * This method validates the {@link FenixEmailRequest} object, constructs an email message,
      * and sends it using the {@code JavaMailSender}. Additionally, it logs the email details
      * (e.g., recipients, subject, and content) in a {@link FenixEmailLog}.
      * </p>
      *
      * <p><b>Steps performed:</b></p>
      * <ul>
-     *     <li>Validates the {@link EmailRequest} object using {@link jakarta.validation.Valid}.</li>
+     *     <li>Validates the {@link FenixEmailRequest} object using {@link jakarta.validation.Valid}.</li>
      *     <li>Creates a new {@link FenixEmailLog} instance and populates it with email details.</li>
      *     <li>Constructs a MIME message using {@link MimeMessageHelper}, including optional attachments.</li>
      *     <li>Sends the email using {@code JavaMailSender}.</li>
@@ -109,7 +109,7 @@ public class FenixMailService {
      *
      * <p><b>Parameters:</b></p>
      * <ul>
-     *     <li><b>request:</b> A {@link EmailRequest} object containing the email details.
+     *     <li><b>request:</b> A {@link FenixEmailRequest} object containing the email details.
      *         <ul>
      *             <li>{@code to}: A list of recipient email addresses (required, must not be empty).</li>
      *             <li>{@code subject}: The subject of the email (required, must not be null).</li>
@@ -139,12 +139,12 @@ public class FenixMailService {
      *     <li>{@code fenixLogService}: Persists the email log details.</li>
      * </ul>
      *
-     * @param request The {@link EmailRequest} object containing email details (must be valid).
+     * @param request The {@link FenixEmailRequest} object containing email details (must be valid).
      * @return {@code true} if the email is successfully sent.
      * @throws RuntimeException If a {@link MessagingException} occurs during email sending.
      */
 
-    public boolean sendJson(@Valid EmailRequest request) {
+    public boolean sendJson(@Valid FenixEmailRequest request) {
         FenixEmailLog fenixEmailLog = new FenixEmailLog();
         fenixEmailLog.setRecipients(request.getTo());
         fenixEmailLog.setSubject(request.getSubject());

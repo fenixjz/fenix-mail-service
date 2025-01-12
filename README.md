@@ -122,10 +122,10 @@ logs.forEach(System.out::println);
 
 ### `sendJson`
 
-Sends an email using a validated `EmailRequest` object. This method provides a structured way to send emails with optional attachments and logs email activity.
+Sends an email using a validated `FenixEmailRequest` object. This method provides a structured way to send emails with optional attachments and logs email activity.
 
 #### Parameters:
-- `request` (EmailRequest): A validated object containing email details:
+- `request` (FenixEmailRequest): A validated object containing email details:
     - `to` (List<String>): A list of recipient email addresses (required).
     - `subject` (String): The subject of the email (required).
     - `content` (String): The email body, either plain text or HTML (required).
@@ -137,7 +137,7 @@ Sends an email using a validated `EmailRequest` object. This method provides a s
 
 #### Example:
 ```java
-EmailRequest request = new EmailRequest();
+FenixEmailRequest request = new FenixEmailRequest();
 request.setTo(List.of("recipient@example.com"));
 request.setSubject("Test Subject");
 request.setContent("<p>This is a test email.</p>");
@@ -173,7 +173,7 @@ public class MailController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request) {
+    public ResponseEntity<String> sendEmail(@RequestBody FenixEmailRequest request) {
         boolean isSent = mailService.send(
                 request.getRecipients(),
                 request.getSubject(),

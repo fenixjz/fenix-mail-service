@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-public class EmailRequest {
+public class FenixEmailRequest {
 
     @NotEmpty
     private List<String> to;
