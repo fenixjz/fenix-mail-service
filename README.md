@@ -37,7 +37,7 @@ Add the Fenix Mail Service dependency:
 <dependency>
     <groupId>com.github.fenixjz</groupId>
     <artifactId>fenix-mail-service</artifactId>
-    <version>v1.1.6</version>
+    <version>v1.1.9</version>
 </dependency>
 ```
 
