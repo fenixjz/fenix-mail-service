@@ -17,18 +17,51 @@ public class FenixMailConfig {
 
     private final FenixMailProperties fenixMailProperties;
 
+    /**
+     * Configures and provides a JavaMailSender bean for the application.
+     * <p>
+     * This method creates and configures an instance of {@link JavaMailSenderImpl} using
+     * the properties defined in the {@link FenixMailProperties} component. The configuration
+     * ensures that the mail sender has all necessary SMTP settings for sending emails.
+     * </p>
+     *
+     * <p>
+     * The method performs the following steps:
+     * <ul>
+     *   <li>Instantiates a {@link JavaMailSenderImpl} object.</li>
+     *   <li>Sets the SMTP server host, port, username, and password based on the properties
+     *       defined in {@link FenixMailProperties}.</li>
+     *   <li>Sets the default encoding for email messages.</li>
+     *   <li>Retrieves the internal {@link Properties} object from {@link JavaMailSenderImpl}
+     *       and populates additional mail properties such as authentication, STARTTLS, and
+     *       logging configurations.</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * Key properties configured:
+     * <ul>
+     *   <li><b>mail.host:</b> Specifies the SMTP server host.</li>
+     *   <li><b>mail.port:</b> Specifies the SMTP server port.</li>
+     *   <li><b>mail.username:</b> Sets the username for SMTP authentication.</li>
+     *   <li><b>mail.password:</b> Sets the password for SMTP authentication.</li>
+     *   <li><b>mail.from-address:</b> Specifies the default sender's email address.</li>
+     *   <li><b>mail.default-encoding:</b> Specifies the default encoding for email content.</li>
+     *   <li><b>mail.smtp.auth:</b> Enables or disables SMTP authentication.</li>
+     *   <li><b>mail.smtp.starttls.enable:</b> Enables or disables STARTTLS support for secure connections.</li>
+     *   <li><b>mail.log-path:</b> Configures the path for logging email transactions.</li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * The configured {@link JavaMailSender} instance is managed as a Spring bean, allowing it to
+     * be injected into other components or services for sending emails.
+     * </p>
+     *
+     * @return A fully configured {@link JavaMailSender} instance ready for sending emails.
+     */
     @Bean
     public JavaMailSender javaMailSender() {
-        System.out.println("Mail Host: " + fenixMailProperties.getHost());
-        System.out.println("Mail Port: " + fenixMailProperties.getPort());
-        System.out.println("Mail Username: " + fenixMailProperties.getUsername());
-        System.out.println("Mail Password: " + fenixMailProperties.getPassword());
-        System.out.println("Mail Sent From: " + fenixMailProperties.getFromAddress());
-        System.out.println("mail.default-encoding: " + fenixMailProperties.getDefaultEncoding());
-        System.out.println("mail.smtp.auth: " + fenixMailProperties.isAuth());
-        System.out.println("mail.smtp.starttls.enable: " + fenixMailProperties.isStarttlsEnable());
-        System.out.println("mail.log-path: " + fenixMailProperties.getLogPath());
-
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(fenixMailProperties.getHost());

@@ -22,14 +22,36 @@ public class FenixLogService {
     private final ObjectMapper objectMapper;
 
     /**
-     * Saves the email log entry to a JSON file.
-     * This method reads the current list of email logs from the JSON file,
-     * appends the new email log entry, and writes the updated list back to the file.
+     * Saves an email log to the JSON file specified in the application configuration.
+     * <p>
+     * This method reads the current email logs from the JSON file, appends the new
+     * {@link FenixEmailLog} entry to the list, and writes the updated list back to the file.
+     * </p>
      *
-     * @param fenixEmailLog An instance of {@link FenixEmailLog} representing the details of the email
-     *                 to be logged, such as recipient, subject, body, timestamp, and status.
-     * @throws RuntimeException if an error occurs while writing to the JSON file.
+     * <p><b>Steps performed:</b></p>
+     * <ul>
+     *     <li>Reads the existing email logs from the JSON file using {@code readEmailLogs()}.</li>
+     *     <li>Adds the new email log entry to the list.</li>
+     *     <li>Writes the updated list to the JSON file located at the path specified
+     *         by {@code fenixMailProperties.getLogPath()}.</li>
+     * </ul>
+     *
+     * <p><b>Important Notes:</b></p>
+     * <ul>
+     *     <li>If the JSON file does not exist, it will be created.</li>
+     *     <li>If an error occurs during the write operation, a {@link RuntimeException} is thrown.</li>
+     * </ul>
+     *
+     * <p><b>Dependencies:</b></p>
+     * <ul>
+     *     <li>{@code objectMapper}: Used for reading and writing JSON data.</li>
+     *     <li>{@code fenixMailProperties}: Provides the path to the log file.</li>
+     * </ul>
+     *
+     * @param fenixEmailLog The email log entry to be saved (must not be null).
+     * @throws RuntimeException If an {@link IOException} occurs while writing to the JSON file.
      */
+
     public void saveEmailLog(FenixEmailLog fenixEmailLog) {
         List<FenixEmailLog> fenixEmailLogs = readEmailLogs();
 
@@ -43,15 +65,38 @@ public class FenixLogService {
     }
 
     /**
-     * Reads the email log entries from the JSON file.
-     * This method checks if the JSON file exists. If it does, it reads the file and
-     * deserializes its content into a list of {@link FenixEmailLog} objects. If the file does not exist,
-     * it returns an empty list.
+     * Reads email logs from the JSON file specified in the application configuration.
+     * <p>
+     * This method retrieves a list of {@link FenixEmailLog} entries from a JSON file located
+     * at the path specified by {@code fenixMailProperties.getLogPath()}. If the file does not
+     * exist, it returns an empty list.
+     * </p>
      *
-     * @return A {@link List} of {@link FenixEmailLog} objects representing the history of sent emails.
-     *         Returns an empty list if the log file does not exist.
-     * @throws RuntimeException if an error occurs while reading from the JSON file.
+     * <p><b>Steps performed:</b></p>
+     * <ul>
+     *     <li>Checks if the file exists at the specified path.</li>
+     *     <li>If the file does not exist, returns an empty list.</li>
+     *     <li>If the file exists, reads the content and deserializes it into a list of
+     *         {@link FenixEmailLog} objects using {@code objectMapper}.</li>
+     * </ul>
+     *
+     * <p><b>Important Notes:</b></p>
+     * <ul>
+     *     <li>If the file does not exist, no exception is thrown, and an empty list is returned.</li>
+     *     <li>If an error occurs during the read operation (e.g., invalid JSON format),
+     *         a {@link RuntimeException} is thrown.</li>
+     * </ul>
+     *
+     * <p><b>Dependencies:</b></p>
+     * <ul>
+     *     <li>{@code objectMapper}: Used for reading and deserializing JSON data.</li>
+     *     <li>{@code fenixMailProperties}: Provides the path to the log file.</li>
+     * </ul>
+     *
+     * @return A list of {@link FenixEmailLog} entries, or an empty list if the file does not exist.
+     * @throws RuntimeException If an {@link IOException} occurs while reading from the JSON file.
      */
+
     public List<FenixEmailLog> readEmailLogs() {
         if (!Files.exists(Paths.get(fenixMailProperties.getLogPath()))) {
             return new ArrayList<>();

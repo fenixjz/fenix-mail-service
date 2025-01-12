@@ -99,11 +99,11 @@ Sends an email to one or more recipients with plain text or HTML content.
 ```java
 File attachment = new File("/path/to/file.pdf");
 boolean isSent = mailService.send(
-    List.of("recipient@example.com"),
-    "Test Subject",
-    "<p>This is a test email with optional attachment.</p>",
-    true,
-    attachment
+        List.of("recipient@example.com"),
+        "Test Subject",
+        "<p>This is a test email with optional attachment.</p>",
+        true,
+        attachment
 );
 ```
 
@@ -118,6 +118,38 @@ Reads the email log entries from the JSON file.
 ```java
 List<EmailLog> logs = logService.readEmailLogs();
 logs.forEach(System.out::println);
+```
+
+### `sendJson`
+
+Sends an email using a validated `EmailRequest` object. This method provides a structured way to send emails with optional attachments and logs email activity.
+
+#### Parameters:
+- `request` (EmailRequest): A validated object containing email details:
+    - `to` (List<String>): A list of recipient email addresses (required).
+    - `subject` (String): The subject of the email (required).
+    - `content` (String): The email body, either plain text or HTML (required).
+    - `isHtml` (boolean): A flag indicating whether the content is HTML (`true`) or plain text (`false`).
+    - `attachment` (File): Optional. A file to attach to the email.
+
+#### Returns:
+- `boolean`: `true` if the email is successfully sent.
+
+#### Example:
+```java
+EmailRequest request = new EmailRequest();
+request.setTo(List.of("recipient@example.com"));
+request.setSubject("Test Subject");
+request.setContent("<p>This is a test email.</p>");
+request.setHtml(true);
+request.setAttachment(new File("/path/to/file.pdf"));
+
+boolean isSent = mailService.sendJson(request);
+if (isSent) {
+    System.out.println("Email sent successfully.");
+} else {
+    System.out.println("Failed to send email.");
+}
 ```
 
 ---

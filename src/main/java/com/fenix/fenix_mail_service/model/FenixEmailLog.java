@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class FenixEmailLog {
-
     private List<String> recipients;
     private String subject;
     private String body;
