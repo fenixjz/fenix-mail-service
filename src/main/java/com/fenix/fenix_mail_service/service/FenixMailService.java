@@ -1,8 +1,8 @@
 package com.fenix.fenix_mail_service.service;
 
 import com.fenix.fenix_mail_service.component.FenixMailProperties;
-import com.fenix.fenix_mail_service.model.FenixEmailRequest;
 import com.fenix.fenix_mail_service.model.FenixEmailLog;
+import com.fenix.fenix_mail_service.model.FenixEmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
@@ -15,6 +15,70 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Service class for managing email operations in the Fenix Mail Service.
+ * <p>
+ * This class provides methods to send emails with optional attachments and log email transactions.
+ * It uses the {@link JavaMailSender} for sending emails and relies on the {@link FenixLogService}
+ * for maintaining logs of sent emails.
+ * </p>
+ *
+ * <p><b>Main Features:</b></p>
+ * <ul>
+ *     <li>Send plain text or HTML emails to multiple recipients.</li>
+ *     <li>Support for optional attachments.</li>
+ *     <li>Logs email transactions into a JSON file.</li>
+ * </ul>
+ *
+ * <p><b>Key Methods:</b></p>
+ * <ul>
+ *     <li>{@link #send(List, String, String, boolean, File)}: Sends an email with detailed parameters.</li>
+ *     <li>{@link #sendJson(FenixEmailRequest)}: Sends an email using a validated {@link FenixEmailRequest} object.</li>
+ * </ul>
+ *
+ * <p><b>Dependencies:</b></p>
+ * <ul>
+ *     <li>{@link JavaMailSender}: Sends the constructed email messages.</li>
+ *     <li>{@link FenixMailProperties}: Provides SMTP server details and email configuration.</li>
+ *     <li>{@link FenixLogService}: Handles email logging functionality.</li>
+ * </ul>
+ *
+ * <p><b>Usage Example:</b></p>
+ * <pre>{@code
+ * @Autowired
+ * private FenixMailService mailService;
+ *
+ * public void sendEmailExample() {
+ *     // Using detailed parameters
+ *     mailService.send(
+ *         List.of("recipient@example.com"),
+ *         "Test Subject",
+ *         "This is a test email.",
+ *         false,
+ *         null
+ *     );
+ *
+ *     // Using FenixEmailRequest
+ *     FenixEmailRequest request = new FenixEmailRequest();
+ *     request.setTo(List.of("recipient@example.com"));
+ *     request.setSubject("Test Email");
+ *     request.setContent("<p>This is a test email.</p>");
+ *     request.setHtml(true);
+ *     mailService.sendJson(request);
+ * }
+ * }</pre>
+ *
+ * <p><b>Notes:</b></p>
+ * <ul>
+ *     <li>Emails are logged for both successful and failed transactions.</li>
+ *     <li>Attachments are optional and validated before being included in the email.</li>
+ *     <li>Throws a {@link RuntimeException} if email sending fails due to a {@link MessagingException}.</li>
+ * </ul>
+ *
+ * <p><b>Author:</b> Fenix</p>
+ * <p><b>Version:</b> 1.X</p>
+ * <p><b>Since:</b> 2025-01-12</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class FenixMailService {

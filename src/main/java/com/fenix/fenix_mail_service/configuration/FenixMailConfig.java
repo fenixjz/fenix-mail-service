@@ -10,6 +10,66 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * Configuration class for the Fenix Mail Service.
+ * <p>
+ * This class provides the necessary configuration for setting up a {@link JavaMailSender} bean,
+ * which is used for sending emails in the application. The configuration relies on the
+ * properties defined in the {@link FenixMailProperties} class.
+ * </p>
+ *
+ * <p><b>Features:</b></p>
+ * <ul>
+ *     <li>Reads email-related configuration properties from the application configuration file.</li>
+ *     <li>Configures a {@link JavaMailSender} bean to handle email-sending functionality.</li>
+ *     <li>Supports additional SMTP settings such as authentication and STARTTLS.</li>
+ * </ul>
+ *
+ * <p><b>Dependencies:</b></p>
+ * <ul>
+ *     <li>{@link FenixMailProperties}: Contains the configuration properties for email sending.</li>
+ *     <li>{@link JavaMailSender}: The primary interface for sending emails in Spring applications.</li>
+ * </ul>
+ *
+ * <p><b>Integration:</b></p>
+ * <p>
+ * The configured {@link JavaMailSender} bean is made available as a Spring-managed bean,
+ * allowing it to be injected into other components or services using {@code @Autowired}.
+ * </p>
+ *
+ * <p><b>Example Configuration:</b></p>
+ * <pre>{@code
+ * fenix.spring.mail.host=smtp.example.com
+ * fenix.spring.mail.port=587
+ * fenix.spring.mail.username=my-username
+ * fenix.spring.mail.password=my-password
+ * fenix.spring.mail.default-encoding=UTF-8
+ * fenix.spring.mail.auth=true
+ * fenix.spring.mail.starttls.enable=true
+ * fenix.spring.mail.from-address=no-reply@example.com
+ * fenix.spring.mail.log-path=/var/logs/mail_log.json
+ * }</pre>
+ *
+ * <p><b>Usage Example:</b></p>
+ * <pre>{@code
+ * @Autowired
+ * private JavaMailSender mailSender;
+ *
+ * public void sendTestEmail() {
+ *     MimeMessage message = mailSender.createMimeMessage();
+ *     MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+ *     helper.setTo("recipient@example.com");
+ *     helper.setSubject("Test Email");
+ *     helper.setText("<p>This is a test email.</p>", true);
+ *     mailSender.send(message);
+ * }
+ * }</pre>
+ *
+ * <p><b>Author:</b> Fenix</p>
+ * <p><b>Version:</b> 1.X</p>
+ * <p><b>Since:</b> 2025-01-12</p>
+ */
+
 @Configuration
 @EnableConfigurationProperties(FenixMailProperties.class)
 @RequiredArgsConstructor

@@ -14,6 +14,59 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing email logs in the Fenix Mail Service.
+ * <p>
+ * This class provides functionality to log email transactions into a JSON file and retrieve
+ * logged email data for auditing or debugging purposes. It interacts with the
+ * {@link FenixMailProperties} to determine the log file path and uses the {@link ObjectMapper}
+ * for JSON serialization and deserialization.
+ * </p>
+ *
+ * <p><b>Main Features:</b></p>
+ * <ul>
+ *     <li>Logs email transactions into a JSON file.</li>
+ *     <li>Reads email logs from the JSON file.</li>
+ *     <li>Handles JSON file creation and structured logging.</li>
+ * </ul>
+ *
+ * <p><b>Key Methods:</b></p>
+ * <ul>
+ *     <li>{@link #saveEmailLog(FenixEmailLog)}: Saves a new email log entry into the log file.</li>
+ *     <li>{@link #readEmailLogs()}: Reads and returns all email log entries from the log file.</li>
+ * </ul>
+ *
+ * <p><b>Dependencies:</b></p>
+ * <ul>
+ *     <li>{@link FenixMailProperties}: Provides configuration for the log file path.</li>
+ *     <li>{@link ObjectMapper}: Handles JSON serialization and deserialization.</li>
+ * </ul>
+ *
+ * <p><b>Usage Example:</b></p>
+ * <pre>{@code
+ * @Autowired
+ * private FenixLogService logService;
+ *
+ * public void logEmail(FenixEmailLog emailLog) {
+ *     logService.saveEmailLog(emailLog);
+ * }
+ *
+ * public void printEmailLogs() {
+ *     List<FenixEmailLog> logs = logService.readEmailLogs();
+ *     logs.forEach(System.out::println);
+ * }
+ * }</pre>
+ *
+ * <p><b>Notes:</b></p>
+ * <ul>
+ *     <li>If the log file does not exist, {@link #readEmailLogs()} returns an empty list.</li>
+ *     <li>Any errors during file operations throw a {@link RuntimeException} with the error details.</li>
+ * </ul>
+ *
+ * <p><b>Author:</b> Fenix</p>
+ * <p><b>Version:</b> 1.X</p>
+ * <p><b>Since:</b> 2025-01-12</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class FenixLogService {
